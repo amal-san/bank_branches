@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render ,redirect
 from .serializers import *
 from .models import *
 from rest_framework import generics
@@ -8,9 +8,47 @@ from django.db.models import Q
 from django.http import HttpResponse
 
 
+class Home(View):
 
+    def get(self,request):
+        return render(request,'index.htm')
 
+    def get_form(self,request):
+        try:
+            form = request.POST['form1']
+        except:
+            form = request.POST['form2']
+        finally:
+            return form
+        
+    
+    def post(self,request):
+        if request.method == "POST":
 
+            form = self.get_form(request)
+            print(form)
+            
+            if (form == '1'):
+                ifsc = request.POST['ifsc']
+                print(ifsc)
+                if " " not in ifsc and not None:
+                    return redirect('branch_ifsc/'+ ifsc)
+                else:
+                    return render(request,'index.htm',{"error_form1":"Enter correct IFSC code !"})
+            elif (form == '2'):
+                name = request.POST['name']
+                city = request.POST['city']
+                if name is not '' and city is not '':
+                    return redirect('branches/'+ name + '/'+ city)
+                else:
+                    return render(request,'index.htm',{"error_form2":"Enter in both field !"})
+            
+            else:
+                return render(request,'index.htm',{"global":"Don't search on both forms"})
+
+            
+
+    
 
 class BanksView(generics.ListCreateAPIView):
 	queryset = Banks.objects.all()
@@ -26,10 +64,6 @@ class BranchesIfscView(generics.ListCreateAPIView):
     """
     queryset = Branches.objects.all()
     serializer_class = BranchesSerializer
-
-
-    def post(self, request, format=None):
-        return {"ifsc":"asdfasdf"}
 
 
     def get_queryset(self):

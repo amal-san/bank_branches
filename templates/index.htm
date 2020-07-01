@@ -3,7 +3,83 @@
     <head>
         <title> BANK API </title>
     </head>
+
     <body>
-        <h1>BANK API </h1>
+        <style>
+            .ifsc {
+                display: flex;
+                justify-content: center;
+                flex-direction: column;
+                margin: 0 auto;
+                height: 100%;
+                padding: 2em;
+               
+            }
+            form > input {
+                    margin: 5px;
+            }
+            .ifsc > form {
+                padding: 1em;
+            }
+            .ifsc-input {
+                padding: 10px 20px;
+                border: none;
+                background: aliceblue;
+                border-radius: 5px;
+            }
+            .ifsc-submit {
+                border: none;
+                padding: 10px;
+                border-radius: .2em;
+                font-weight: bold;
+            }
+            .container {
+                display: flex;
+            background: #03a9f44d;
+            margin: 10px;
+            border-radius: 15px;
+            }
+
+        </style>
+        <script>
+            function submitAllBranches(){
+                document.getElementById('ifsc').value = ' ';
+            }
+            function submitIfsc(){
+                document.getElementById('name').value = ' ';
+                document.getElementById('city').value = ' '
+            }
+        </script>
+        <h1 style="text-align: center;">BANK API </h1>
+        <span style="color: red;"> {{global}} </span>
+        <div class="container">
+        <div class="ifsc">
+            <form action="" method="POST">
+                {% csrf_token %}
+                <label for="ifsc">IFSC</label>
+                <input  type="hidden" value="1" name='form1'/>
+                <input id="ifsc" class="ifsc-input" name='ifsc' type="text" placeholder="IFSC CODE" onclick="submitIfsc();">
+                <input  class ="ifsc-submit" type="submit" value="SEARCH"/>
+                <span style="color: red;">{{error_form1}}</span>
+             </form>
+             <h3 style="padding: 1em;color: grey;">Eg: ZSBL0000341</h3>
+        </div>
+        <div class="ifsc">
+            <form action="" method="POST">
+                {% csrf_token %}
+                <input type="hidden" value="2" name='form2'/>
+                <label for="ifsc">Name</label>
+                <input class="ifsc-input" name='name' type="text" placeholder="Name" onclick="submitAllBranches();"/>
+                <label for="ifsc">CITY</label>
+                <input class="ifsc-input" name='city' type="text" placeholder="City" />
+                <input  class ="ifsc-submit" type="submit" value="SEARCH"/>
+                <span style="color: red;">{{error_form2}}</span>
+             </form>
+             <div style="display: flex;">
+             <h3 style="padding: 1em;color: grey;">Eg: STATE BANK OF INDIA</h3>
+             <h3 style="padding: 1em;color: grey;">KANNUR</h3>
+            </div>
+        </div>
+      </div>
     </body>
 </html>
