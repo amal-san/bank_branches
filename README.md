@@ -1,2 +1,2 @@
-# Credicxo
+# Bank Branches
 Bank API application
